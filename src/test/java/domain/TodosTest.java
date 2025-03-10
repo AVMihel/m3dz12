@@ -312,5 +312,38 @@ public class TodosTest {
         Task[] actualMeeting = todos.search("Tomorrow");
         Assertions.assertArrayEquals(expectedMeeting, actualMeeting);
     }
+
+    @Test
+    public void shouldReturnSeveralValuesContainingQuery() {
+        SimpleTask simpleTask = new SimpleTask(5, "Позвонить родителям");
+
+        String[] subtasks = {"Молоко", "Яйца", "Хлеб"};
+        Epic epic = new Epic(55, subtasks);
+
+        Meeting meeting = new Meeting(
+                555,
+                "Выкатка 3й версии приложения",
+                "Приложение НетоБанка",
+                "Во вторник после обеда"
+        );
+
+        Todos todos = new Todos();
+
+        todos.add(simpleTask);
+        todos.add(epic);
+        todos.add(meeting);
+
+        Task[] expectedSimpleTask = {};
+        Task[] actualSimpleTask = todos.search("Зайти в гости");
+        Assertions.assertArrayEquals(expectedSimpleTask, actualSimpleTask);
+
+        Task[] expectedEpic = {epic};
+        Task[] actualEpic = todos.search("Хлеб");
+        Assertions.assertArrayEquals(expectedEpic, actualEpic);
+
+        Task[] expectedMeeting = {meeting};
+        Task[] actualMeeting = todos.search("Во вторник после обеда");
+        Assertions.assertArrayEquals(expectedMeeting, actualMeeting);
+    }
 }
 
