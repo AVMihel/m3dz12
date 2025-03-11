@@ -32,7 +32,7 @@ public class Meeting extends Task {
         if (project.contains(query)) {
             return true;
         }
-        if (start.contains(query)){
+        if (start.contains(query)) {
             return true;
         }
         return false;
