@@ -84,7 +84,24 @@ public class TodosTest {
 
     //Тесты метода matches для класса Meeting
     @Test
-    public void shouldReturnTrueMeetingContainsQuery() {
+    public void shouldReturnTrueMeetingContainsTopic() {
+        Meeting meeting = new Meeting(
+                555,
+                "Выкатка 3й версии приложения",
+                "Приложение НетоБанка",
+                "Во вторник после обеда"
+        );
+
+        boolean result = meeting.matches("Выкатка 3й версии приложения");
+
+        boolean[] expected = {true};
+        boolean[] actual = {result};
+
+        Assertions.assertArrayEquals(expected, actual);
+    }
+
+    @Test
+    public void shouldReturnTrueMeetingContainsProject() {
         Meeting meeting = new Meeting(
                 555,
                 "Выкатка 3й версии приложения",
@@ -216,9 +233,9 @@ public class TodosTest {
     //Тесты метода search для нескольких задач
     @Test
     public void shouldReturnMultipleValuesContainingQuery() {
-        SimpleTask simpleTask = new SimpleTask(5, "Позвонить родителям");
+        SimpleTask simpleTask = new SimpleTask(5, "Билеты купить");
 
-        String[] subtasks = {"Молоко", "Яйца", "Хлеб"};
+        String[] subtasks = {"Билеты", "Яйца", "Хлеб"};
         Epic epic = new Epic(55, subtasks);
 
         Meeting meeting = new Meeting(
@@ -234,17 +251,9 @@ public class TodosTest {
         todos.add(epic);
         todos.add(meeting);
 
-        Task[] expectedSimpleTask = {simpleTask};
-        Task[] actualSimpleTask = todos.search("Позвонить родителям");
-        Assertions.assertArrayEquals(expectedSimpleTask, actualSimpleTask);
-
-        Task[] expectedEpic = {epic};
-        Task[] actualEpic = todos.search("Яйца");
-        Assertions.assertArrayEquals(expectedEpic, actualEpic);
-
-        Task[] expectedMeeting = {meeting};
-        Task[] actualMeeting = todos.search("Выкатка 3й версии приложения");
-        Assertions.assertArrayEquals(expectedMeeting, actualMeeting);
+        Task[] expected = {simpleTask, epic};
+        Task[] actual = todos.search("Билеты");
+        Assertions.assertArrayEquals(expected, actual);
     }
 
     @Test
@@ -311,43 +320,6 @@ public class TodosTest {
         Task[] expectedMeeting = {};
         Task[] actualMeeting = todos.search("Tomorrow");
         Assertions.assertArrayEquals(expectedMeeting, actualMeeting);
-    }
-
-    @Test
-    public void shouldReturnSeveralValuesContainingQuery() {
-        SimpleTask simpleTask = new SimpleTask(5, "Позвонить родителям");
-
-        String[] subtasks = {"Молоко", "Яйца", "Хлеб"};
-        Epic epic = new Epic(55, subtasks);
-
-        Meeting meeting = new Meeting(
-                555,
-                "Выкатка 3й версии приложения",
-                "Приложение НетоБанка",
-                "Во вторник после обеда"
-        );
-
-        Todos todos = new Todos();
-
-        todos.add(simpleTask);
-        todos.add(epic);
-        todos.add(meeting);
-
-        Task[] expectedSimpleTask = {};
-        Task[] actualSimpleTask = todos.search("Зайти в гости");
-        Assertions.assertArrayEquals(expectedSimpleTask, actualSimpleTask);
-
-        Task[] expectedEpic = {epic};
-        Task[] actualEpic = todos.search("Хлеб");
-        Assertions.assertArrayEquals(expectedEpic, actualEpic);
-
-        Task[] expectedMeeting = {meeting};
-        Task[] actualMeeting = todos.search("Приложение НетоБанка");
-        Assertions.assertArrayEquals(expectedMeeting, actualMeeting);
-
-        Task[] expectedMeeting2 = {meeting};
-        Task[] actualMeeting2 = todos.search("Во вторник после обеда");
-        Assertions.assertArrayEquals(expectedMeeting2, actualMeeting2);
     }
 }
 

@@ -19,7 +19,6 @@ public class Epic extends Task {
                 return true;
             }
         }
-
         return false;
     }
 }
